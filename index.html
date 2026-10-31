@@ -5,180 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AccessReady Health — Accessible patient forms for health centers</title>
 <meta name="description" content="We make community health centers' PDF forms and websites meet WCAG 2.1 AA before the HHS Section 504 deadline of May 11, 2027. Start with five forms for $149.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>
-  /* Concept: a proofreader's desk. Patient forms are marked up the way an editor marks copy —
-     highlighter for fields, mono tags for structure — and the page shows what a screen reader says. */
-  :root {
-    --paper: #f6f7f4;
-    --sheet: #ffffff;
-    --ink: #101a22;
-    --ink-soft: #46535c;
-    --rule: #d5dbd7;
-    --mark: #f3c94b;      /* highlighter */
-    --mark-soft: #fbedb9;
-    --pen: #9a3412;       /* editor's red pen, used for "before" */
-    --go: #0f6b5e;        /* remediated */
-    --go-soft: #dcefe9;
-    --night: #0d171e;
-    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-    --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 1.125rem; line-height: 1.6; }
-  a { color: inherit; }
-  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
-  .wrap { max-width: 1160px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
-  .skip { position: absolute; left: 12px; top: -60px; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 6px; z-index: 10; text-decoration: none; }
-  .skip:focus { top: 12px; }
-  h1, h2, h3 { font-family: var(--display); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
-  .eyebrow { font-family: var(--mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
-
-  /* header */
-  header.top { border-bottom: 1px solid var(--rule); background: var(--paper); }
-  header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em; }
-  .brand-mark { width: 30px; height: 36px; border: 2.5px solid var(--ink); border-radius: 3px; position: relative; background: var(--sheet); flex: none; }
-  .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 4px; right: 4px; height: 5px; border-radius: 1px; }
-  .brand-mark::before { top: 7px; background: var(--mark); }
-  .brand-mark::after { top: 17px; background: var(--ink); height: 2.5px; box-shadow: 0 6px 0 var(--ink); right: 9px; }
-  nav.top-nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-  nav.top-nav a { text-decoration: none; font-size: 1rem; }
-  nav.top-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-
-  /* hero */
-  .hero { padding-block: 64px 48px; }
-  .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
-  .hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 800; }
-  .hero h1 .hl { background: linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 92%, transparent 92%); padding: 0 .08em; }
-  .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 34ch; margin: 22px 0 30px; }
-  .lede strong { color: var(--ink); }
-  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1.05rem; border: 2px solid var(--ink); }
-  .btn-primary { background: var(--ink); color: #fff; }
-  .btn-primary:hover { background: #22323d; }
-  .btn-ghost { background: transparent; }
-  .btn-ghost:hover { background: var(--sheet); }
-  .small-note { font-size: .95rem; color: var(--ink-soft); margin-top: 14px; }
-
-  /* the form demo */
-  .desk { position: relative; }
-  .sheet { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; box-shadow: 0 1px 0 var(--rule), 0 24px 48px -28px rgba(16,26,34,.35); padding: 26px 26px 22px; transform: rotate(-1.2deg); }
-  .sheet-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 18px; gap: 10px; }
-  .sheet-head b { font-family: var(--display); font-size: 1.15rem; }
-  .sheet-head span { font-family: var(--mono); font-size: .72rem; color: var(--ink-soft); }
-  .field { position: relative; margin-bottom: 16px; }
-  .field .label { font-size: .9rem; color: var(--ink-soft); }
-  .field .line { height: 30px; border-bottom: 1.5px solid #9aa6ad; }
-  .field .box { display: inline-block; width: 18px; height: 18px; border: 1.5px solid #9aa6ad; vertical-align: -3px; margin-right: 8px; }
-  .tag { position: absolute; right: 0; top: -2px; font-family: var(--mono); font-size: .7rem; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
-  .demo[data-state="before"] .tag { background: #fde7dc; color: var(--pen); }
-  .demo[data-state="after"] .tag { background: var(--go-soft); color: var(--go); }
-  .demo[data-state="after"] .field .line, .demo[data-state="after"] .field .box { border-color: var(--go); }
-  .demo[data-state="after"] .field.focus .line { background: var(--mark-soft); }
-  .field.focus .line, .field.focus .box { background: var(--mark-soft); }
-  .toggle { display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; padding: 3px; background: var(--sheet); margin-bottom: 16px; }
-  .toggle button { font: inherit; font-size: .95rem; font-weight: 700; border: 0; background: transparent; color: var(--ink); padding: 7px 16px; border-radius: 999px; cursor: pointer; }
-  .toggle button[aria-pressed="true"] { background: var(--ink); color: #fff; }
-  .voice { margin-top: 18px; background: var(--night); color: #e8eef0; border-radius: 10px; padding: 16px 18px; font-family: var(--mono); font-size: .86rem; line-height: 1.55; }
-  .voice .who { color: #9fb3bb; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .wave { display: inline-flex; gap: 2px; align-items: center; height: 12px; }
-  .wave i { width: 2px; background: var(--mark); height: 4px; border-radius: 1px; animation: talk 1s ease-in-out infinite; }
-  .wave i:nth-child(2) { animation-delay: .15s } .wave i:nth-child(3) { animation-delay: .3s } .wave i:nth-child(4) { animation-delay: .45s }
-  @keyframes talk { 50% { height: 12px; } }
-  .voice ol { margin: 0; padding-left: 20px; }
-  .voice li { margin-bottom: 3px; }
-  .voice li.now { color: var(--mark); }
-  .demo[data-state="before"] .voice .verdict { color: #ffb08a; }
-  .demo[data-state="after"] .voice .verdict { color: #8ee0c8; }
-  .verdict { margin-top: 10px; font-family: var(--body); font-size: .95rem; }
-
-  /* countdown band */
-  .band { background: var(--ink); color: #fff; }
-  .band .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 26px; flex-wrap: wrap; }
-  .days { font-family: var(--display); font-weight: 800; font-size: clamp(2.4rem, 5vw, 3.4rem); color: var(--mark); line-height: 1; font-variant-numeric: tabular-nums; }
-  .band p { margin: 0; max-width: 60ch; color: #d6dde1; }
-  .band p strong { color: #fff; }
-
-  section.block { padding-block: 84px; }
-  section.block h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin: 10px 0 18px; }
-  .intro { color: var(--ink-soft); max-width: 60ch; }
-
-  /* steps */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 44px; border-top: 2px solid var(--ink); }
-  .step { padding: 26px 26px 10px 0; border-right: 1px solid var(--rule); }
-  .step + .step { padding-left: 26px; }
-  .step:last-child { border-right: 0; }
-  .step .n { font-family: var(--mono); font-size: .8rem; color: var(--ink-soft); }
-  .step h3 { font-size: 1.5rem; margin: 10px 0 10px; }
-  .step p { color: var(--ink-soft); margin: 0 0 12px; }
-  .step .price { font-family: var(--mono); font-weight: 600; font-size: .9rem; background: var(--mark-soft); padding: 2px 8px; border-radius: 3px; }
-
-  /* pricing */
-  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
-  .plan { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; min-width: 0; }
-  .plan.featured { border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--mark); }
-  .plan h3 { font-size: 1.35rem; }
-  .plan .amount { font-family: var(--display); font-weight: 800; font-size: 2.6rem; margin: 14px 0 2px; }
-  .plan .amount small { font-family: var(--body); font-weight: 400; font-size: 1rem; color: var(--ink-soft); }
-  .plan .for { color: var(--ink-soft); font-size: 1rem; margin: 0 0 18px; }
-  .plan ul { list-style: none; padding: 0; margin: 0 0 22px; flex: 1; }
-  .plan li { padding: 9px 0 9px 28px; border-top: 1px dashed var(--rule); position: relative; font-size: 1rem; }
-  .plan li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 14px; height: 8px; border-left: 2.5px solid var(--go); border-bottom: 2.5px solid var(--go); transform: rotate(-45deg); }
-  .plan .btn { justify-content: center; }
-
-  /* never */
-  .never { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
-  .never div { border-left: 4px solid var(--pen); padding: 4px 0 4px 18px; }
-  .never h3 { font-size: 1.2rem; margin-bottom: 6px; }
-  .never p { color: var(--ink-soft); margin: 0; font-size: 1rem; }
-
-  /* faq */
-  .faq { margin-top: 30px; border-top: 2px solid var(--ink); }
-  .faq details { border-bottom: 1px solid var(--rule); }
-  .faq summary { cursor: pointer; padding: 20px 40px 20px 0; font-family: var(--display); font-weight: 700; font-size: 1.2rem; list-style: none; position: relative; }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; position: absolute; right: 4px; top: 16px; font-size: 1.6rem; font-weight: 500; }
-  .faq details[open] summary::after { content: "–"; }
-  .faq details p { margin: 0 0 22px; color: var(--ink-soft); max-width: 70ch; }
-
-  /* contact */
-  .contact { background: var(--mark); }
-  .contact .wrap { padding-block: 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
-  .contact h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; }
-  .contact p { max-width: 46ch; }
-  .mailbox { background: var(--sheet); border: 2px solid var(--ink); border-radius: 10px; padding: 22px; min-width: 0; }
-  .mailbox .addr { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; overflow-wrap: anywhere; display: block; margin: 6px 0 14px; }
-  .copy { font: inherit; font-size: .95rem; font-weight: 700; border: 2px solid var(--ink); background: var(--sheet); border-radius: 6px; padding: 8px 14px; cursor: pointer; margin-left: 8px; }
-
-  footer { padding-block: 34px; font-size: .95rem; color: var(--ink-soft); }
-  footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-
-  @media (max-width: 900px) {
-    .hero .wrap, .contact .wrap { grid-template-columns: 1fr; }
-    .steps, .plans, .never { grid-template-columns: 1fr; }
-    .step, .step + .step { padding: 22px 0 8px; border-right: 0; border-bottom: 1px solid var(--rule); }
-    .sheet { transform: none; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="AccessReady Health, home"><span class="brand-mark" aria-hidden="true"></span>AccessReady Health</a>
+    <a class="brand" href="#top" aria-label="AccessReady Health, back to top"><span class="brand-mark" aria-hidden="true"></span>AccessReady Health</a>
     <nav class="top-nav" aria-label="Main">
       <ul>
         <li><a href="#how">How it works</a></li>
         <li><a href="#pricing">Pricing</a></li>
+        <li><a href="sample-report.html">Sample report</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a class="nav-cta" href="#start" data-plan="check">Free check</a></li>
       </ul>
     </nav>
   </div>
@@ -192,24 +37,24 @@
         <h1>Patient forms <span class="hl">everyone</span> can fill in.</h1>
         <p class="lede">We fix your PDF forms and website so patients using screen readers, keyboards or magnifiers can use them — and meet <strong>WCAG 2.1 AA before May 11, 2027</strong>.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:ahmed@accessready.health?subject=Five-form%20pilot">Start with 5 forms · $149</a>
-          <a class="btn btn-ghost" href="#how">See how it works</a>
+          <a class="btn btn-primary" href="#start" data-plan="pilot">Start with 5 forms · $149</a>
+          <a class="btn btn-ghost" href="#start" data-plan="check">Get a free check</a>
         </div>
-        <p class="small-note">No patient data. No widgets. Fixed prices, by email.</p>
+        <p class="small-note">No patient data. No widgets. Fixed prices, by email. <a class="text-link" href="sample-report.html">See a sample report</a></p>
       </div>
 
-      <div class="desk">
+      <div>
         <div class="demo" id="demo" data-state="before">
-          <div class="toggle" role="group" aria-label="Show the form before or after remediation">
+          <div class="toggle" role="group" aria-label="Show the form before or after we fix it">
             <button type="button" data-set="before" aria-pressed="true">Before</button>
             <button type="button" data-set="after" aria-pressed="false">After we fix it</button>
           </div>
           <div class="sheet" aria-hidden="true">
             <div class="sheet-head"><b>New Patient Registration</b><span>page 1 of 3</span></div>
-            <div class="field" data-i="0"><div class="label">Full name</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; Full name, required">no label</span></div>
-            <div class="field" data-i="1"><div class="label">Date of birth</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; MM/DD/YYYY">no label</span></div>
-            <div class="field" data-i="2"><div class="label">Preferred language</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; Preferred language">no label</span></div>
-            <div class="field" data-i="3"><div class="label"><span class="box"></span>I agree to the sliding fee policy</div><span class="tag" data-before="untagged" data-after="&lt;Form&gt; checkbox">untagged</span></div>
+            <div class="field"><div class="label">Full name</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; Full name, required">no label</span></div>
+            <div class="field"><div class="label">Date of birth</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; MM/DD/YYYY">no label</span></div>
+            <div class="field"><div class="label">Preferred language</div><div class="line"></div><span class="tag" data-before="no label" data-after="&lt;Form&gt; Preferred language">no label</span></div>
+            <div class="field"><div class="label"><span class="box"></span>I agree to the sliding fee policy</div><span class="tag" data-before="untagged" data-after="&lt;Form&gt; checkbox">untagged</span></div>
           </div>
           <div class="voice">
             <div class="who"><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>What a screen reader says, field by field</div>
@@ -232,12 +77,12 @@
     <div class="wrap">
       <p class="eyebrow">How it works</p>
       <h2 id="how-title">Three steps, all by email.</h2>
-      <p class="intro">You stay in control of every step. You only pay for the next one when the last one was worth it.</p>
+      <p class="intro">You stay in control of every step, and only pay for the next one when the last one was worth it.</p>
       <div class="steps">
         <div class="step">
           <p class="n">Step 1</p>
           <h3>Free public check</h3>
-          <p>We test your public pages and the PDFs linked from them with automated tools and send you a short report.</p>
+          <p>We test your public pages and the PDFs linked from them, then email you a short report. <a class="text-link" href="sample-report.html">See a sample</a>.</p>
           <span class="price">Free</span>
         </div>
         <div class="step">
@@ -253,10 +98,13 @@
           <span class="price">from $1,490</span>
         </div>
       </div>
+      <div class="cta-row" style="margin-top:36px">
+        <a class="btn btn-primary" href="#start" data-plan="check">Request your free check</a>
+      </div>
     </div>
   </section>
 
-  <section class="block" id="pricing" aria-labelledby="pricing-title" style="padding-top:0">
+  <section class="block tight" id="pricing" aria-labelledby="pricing-title">
     <div class="wrap">
       <p class="eyebrow">Pricing</p>
       <h2 id="pricing-title">Fixed prices. No surprises.</h2>
@@ -271,7 +119,7 @@
             <li>Every form field labelled</li>
             <li>Validation report for each file</li>
           </ul>
-          <a class="btn btn-ghost" href="mailto:ahmed@accessready.health?subject=Five-form%20pilot">Start the pilot</a>
+          <a class="btn btn-ghost" href="#start" data-plan="pilot">Start the pilot</a>
         </div>
         <div class="plan featured">
           <h3>Readiness package</h3>
@@ -285,7 +133,7 @@
             <li>Letters to your portal and scheduling vendors</li>
             <li>Evidence file with test and retest dates</li>
           </ul>
-          <a class="btn btn-primary" href="mailto:ahmed@accessready.health?subject=Readiness%20package">Ask about the package</a>
+          <a class="btn btn-primary" href="#start" data-plan="package">Ask about the package</a>
         </div>
         <div class="plan">
           <h3>Documents plan</h3>
@@ -297,14 +145,14 @@
             <li>Evidence file kept up to date</li>
             <li>Cancel with 30 days' notice</li>
           </ul>
-          <a class="btn btn-ghost" href="mailto:ahmed@accessready.health?subject=Documents%20plan">Ask about the plan</a>
+          <a class="btn btn-ghost" href="#start" data-plan="plan">Ask about the plan</a>
         </div>
       </div>
-      <p class="small-note">US clients pay in USD by bank transfer (ACH) or card, through Payoneer.</p>
+      <p class="small-note">US clients pay in USD by bank transfer (ACH) or card, through Payoneer. Invoices are sent by email.</p>
     </div>
   </section>
 
-  <section class="block" aria-labelledby="never-title" style="padding-top:0">
+  <section class="block tight" aria-labelledby="never-title">
     <div class="wrap">
       <p class="eyebrow">What we never do</p>
       <h2 id="never-title">Three promises.</h2>
@@ -316,7 +164,7 @@
     </div>
   </section>
 
-  <section class="block" id="faq" aria-labelledby="faq-title" style="padding-top:0">
+  <section class="block tight" id="faq" aria-labelledby="faq-title">
     <div class="wrap">
       <p class="eyebrow">Questions</p>
       <h2 id="faq-title">Good to know.</h2>
@@ -324,36 +172,89 @@
         <details><summary>Who has to meet the May 11, 2027 deadline?</summary><p>Under HHS's 2024 Section 504 rule, organizations that receive HHS funding — including community health centers — must make their web content and mobile apps conform to WCAG 2.1 AA. An interim final rule in May 2026 moved the date to May 11, 2027 for organizations with 15 or more employees, and May 10, 2028 for smaller ones.</p></details>
         <details><summary>Do old PDFs on our site count?</summary><p>The rule has an exception for documents posted before the deadline, but not for documents people still use to get your services — such as registration, consent and sliding fee forms. Those are usually the first ones to fix.</p></details>
         <details><summary>We already have an accessibility widget. Isn't that enough?</summary><p>No. Overlay widgets don't fix the underlying code or your PDFs. In 2025 the FTC ordered one widget company to pay $1 million and stop claiming its tool makes websites compliant.</p></details>
+        <details><summary>What does the free check include?</summary><p>An automated test of your homepage and key patient pages against WCAG 2.1 A and AA rules, a check of the PDFs linked from them, and a short report in plain language. Automated tools find only part of the issues, so the report also says what still needs manual testing.</p></details>
         <details><summary>Where are you based, and how do we work together?</summary><p>We're a small specialist team based in Egypt, working remotely with US health centers. Everything happens by email, so every decision is documented for your compliance file.</p></details>
         <details><summary>Is this legal advice?</summary><p>No. We provide technical testing and remediation against WCAG 2.1 AA. Please ask your counsel about legal questions.</p></details>
       </div>
     </div>
   </section>
 
-  <section class="contact" id="contact" aria-labelledby="contact-title">
+  <section class="contact" id="start" aria-labelledby="start-title">
     <div class="wrap">
       <div>
-        <h2 id="contact-title">Send us five forms.</h2>
-        <p>Tell us which forms patients use most. We'll reply within one business day with next steps.</p>
+        <p class="eyebrow">Get started</p>
+        <h2 id="start-title">Tell us about your health center.</h2>
+        <p>We reply within one business day. For a free check we only need your website; for the pilot, tell us which forms patients use most.</p>
+        <div class="direct">
+          <p class="eyebrow">Prefer email?</p>
+          <span class="addr" id="addr">ahmed@accessready.health</span>
+          <button type="button" class="copy" id="copy">Copy address</button>
+          <p class="small-note" id="copy-status" aria-live="polite" style="color:var(--ink)"></p>
+        </div>
       </div>
-      <div class="mailbox">
-        <span class="eyebrow">Email</span>
-        <span class="addr" id="addr">ahmed@accessready.health</span>
-        <a class="btn btn-primary" href="mailto:ahmed@accessready.health">Write to us</a><button type="button" class="copy" id="copy">Copy address</button>
-      </div>
+
+      <form class="request" id="request" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="3f9f71ca-582a-47d9-aefe-b6b843a436a3">
+        <input type="hidden" name="subject" value="New request from accessready.health">
+        <input type="hidden" name="from_name" value="AccessReady Health website">
+        <input type="hidden" name="redirect" value="https://accessready.health/thanks.html">
+        <div class="hp" aria-hidden="true"><label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1"></label></div>
+
+        <div class="f">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="f">
+          <label for="f-email">Work email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="f">
+          <label for="f-org">Organization</label>
+          <input id="f-org" name="organization" type="text" autocomplete="organization" required>
+        </div>
+        <div class="f">
+          <label for="f-site">Website <span class="opt">(optional)</span></label>
+          <input id="f-site" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourhealthcenter.org">
+        </div>
+        <div class="f full">
+          <label for="f-need">I'm interested in</label>
+          <select id="f-need" name="interested_in">
+            <option value="Free public check">Free public check</option>
+            <option value="Five-form pilot ($149)">Five-form pilot ($149)</option>
+            <option value="Readiness package">Readiness package ($1,490 / $2,490)</option>
+            <option value="Documents plan">Documents plan ($199 / $349 a month)</option>
+            <option value="Something else">Something else</option>
+          </select>
+        </div>
+        <div class="f full">
+          <label for="f-msg">Anything we should know? <span class="opt">(optional)</span></label>
+          <textarea id="f-msg" name="message" aria-describedby="f-msg-hint"></textarea>
+          <span class="hint" id="f-msg-hint">For example: number of sites, which forms matter most, your deadline. Please don't include patient information.</span>
+        </div>
+        <p class="status" id="form-status" role="status" aria-live="polite"></p>
+        <div class="form-foot">
+          <button class="btn btn-primary" type="submit" id="send">Send request</button>
+          <p>By sending, you agree we may email you about your request. <a href="privacy.html">Privacy notice</a>.</p>
+        </div>
+      </form>
     </div>
   </section>
 </main>
 
-<footer>
+<footer class="site">
   <div class="wrap">
     <span>© 2026 AccessReady Health · 4 Mayhoob, Abu Sir, Al Wasta, Beni Suef 12511, Egypt</span>
-    <span>This site is built to WCAG 2.1 AA.</span>
+    <nav aria-label="Footer">
+      <a href="sample-report.html">Sample report</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="#start">Contact</a>
+    </nav>
   </div>
 </footer>
 
 <script>
   (function () {
+    // Before/after demo: what a screen reader announces on an untagged vs. a remediated form.
     var lines = {
       before: ["Edit text. Blank.", "Edit text. Blank.", "Edit text. Blank.", "Check box, not checked."],
       after: ["Full name, required, edit text.", "Date of birth, MM slash DD slash YYYY, edit text.", "Preferred language, edit text.", "I agree to the sliding fee policy, check box, not checked."]
@@ -366,8 +267,7 @@
     var list = document.getElementById("voice-list");
     var verdict = document.getElementById("verdict");
     var fields = demo.querySelectorAll(".field");
-    var timer = null, step = 0;
-
+    var step = 0;
     function render(state) {
       demo.setAttribute("data-state", state);
       demo.querySelectorAll(".toggle button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.set === state)); });
@@ -386,16 +286,81 @@
     });
     render("before");
     tick();
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(tick, 1800);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(tick, 1800);
 
-    var deadline = Date.UTC(2027, 4, 11);
-    var days = Math.max(0, Math.ceil((deadline - Date.now()) / 86400000));
+    // Countdown to the HHS deadline.
+    var days = Math.max(0, Math.ceil((Date.UTC(2027, 4, 11) - Date.now()) / 86400000));
     document.getElementById("days").textContent = days;
 
+    // Any "Start"/"Ask about" button pre-selects the matching service in the form.
+    var need = document.getElementById("f-need");
+    var planValues = { check: "Free public check", pilot: "Five-form pilot ($149)", package: "Readiness package", plan: "Documents plan" };
+    document.querySelectorAll("[data-plan]").forEach(function (a) {
+      a.addEventListener("click", function () {
+        need.value = planValues[a.dataset.plan];
+        setTimeout(function () { document.getElementById("f-name").focus({ preventScroll: true }); }, 450);
+      });
+    });
+
+    // Highlight the section in the menu while scrolling.
+    var navLinks = document.querySelectorAll('nav.top-nav a[href^="#"]');
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          navLinks.forEach(function (l) {
+            if (l.getAttribute("href") === "#" + e.target.id) l.setAttribute("aria-current", "true");
+            else l.removeAttribute("aria-current");
+          });
+        });
+      }, { rootMargin: "-45% 0px -50% 0px" });
+      ["how", "pricing", "faq", "start"].forEach(function (id) { io.observe(document.getElementById(id)); });
+    }
+
+    // Copy the email address.
     document.getElementById("copy").addEventListener("click", function () {
-      var btn = this;
-      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy address"; }, 2000); };
-      if (navigator.clipboard) navigator.clipboard.writeText("ahmed@accessready.health").then(done, function () {});
+      var status = document.getElementById("copy-status");
+      var text = "ahmed@accessready.health";
+      function ok() { status.textContent = "Copied. Paste it into your email app."; }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(ok, function () { status.textContent = "Select the address above and copy it."; });
+      } else {
+        var range = document.createRange(); range.selectNodeContents(document.getElementById("addr"));
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        status.textContent = "Address selected. Press Ctrl+C (or Cmd+C) to copy.";
+      }
+    });
+
+    // Send the form without leaving the page; plain POST still works without JavaScript.
+    var form = document.getElementById("request");
+    var statusEl = document.getElementById("form-status");
+    var send = document.getElementById("send");
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      statusEl.className = "status";
+      var invalid = Array.prototype.find.call(form.querySelectorAll("[required]"), function (el) { return !el.checkValidity(); });
+      if (invalid) {
+        var label = form.querySelector('label[for="' + invalid.id + '"]').textContent.trim();
+        statusEl.className = "status err";
+        statusEl.textContent = invalid.type === "email" && invalid.value ? "Please enter a valid email address." : "Please fill in: " + label + ".";
+        invalid.setAttribute("aria-invalid", "true");
+        invalid.focus();
+        return;
+      }
+      form.querySelectorAll("[aria-invalid]").forEach(function (el) { el.removeAttribute("aria-invalid"); });
+      send.disabled = true;
+      statusEl.textContent = "Sending…";
+      fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data.success) throw new Error(data.message || "failed");
+          window.location.href = "thanks.html";
+        })
+        .catch(function () {
+          send.disabled = false;
+          statusEl.className = "status err";
+          statusEl.textContent = "Sorry, your request could not be sent. Please email ahmed@accessready.health instead.";
+        });
     });
   })();
 </script>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Accessibility snapshot – Riverside Community Health Center (fictional example)</title>
+<style>
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#dde2e8; --bg:#ffffff; --soft:#f4f6f8; --bad:#a1260d; --ok:#1d6b3a; --accent:#1f4f8f; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 1.7rem; margin: 0 0 4px; } h2 { font-size: 1.2rem; margin: 32px 0 8px; }
+  .muted { color: var(--muted); } .small { font-size: .85rem; }
+  .tiles { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin: 20px 0; }
+  .tile { background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .tile b { display:block; font-size:1.8rem; }
+  table { width:100%; border-collapse: collapse; font-size: .93rem; }
+  th, td { text-align:left; vertical-align:top; padding:10px 8px; border-bottom:1px solid var(--line); }
+  th { background: var(--soft); font-weight:600; }
+  .num { text-align:right; white-space:nowrap; }
+  .impact { font-size:.8rem; padding:2px 8px; border-radius:99px; background:var(--soft); border:1px solid var(--line); }
+  .impact.critical, .impact.serious { color:#fff; background:var(--bad); border-color:var(--bad); }
+  .bad { color: var(--bad); font-weight:600; } .ok { color: var(--ok); font-weight:600; }
+  .callout { border-left: 4px solid var(--accent); background: var(--soft); padding: 4px 16px 8px; margin-top: 24px; }
+  code { font-size: .85em; }
+  .table-wrap { overflow-x:auto; }
+  footer { margin-top: 40px; font-size:.85rem; color: var(--muted); border-top:1px solid var(--line); padding-top:16px; }
+</style>
+</head>
+<body>
+<main>
+  <p style="background:#fbedb9;border:2px solid #101a22;border-radius:8px;padding:12px 16px;margin:0 0 20px;font-weight:600">
+  Sample report with fictional data. Real reports cover your own public pages and PDFs.
+  <a href="index.html#start">Request your free check</a> · <a href="index.html">Back to AccessReady Health</a></p>
+  <p class="muted small">AccessReady Health · Public accessibility snapshot</p>
+  <h1>Riverside Community Health Center (fictional example)</h1>
+  <p class="muted">Automated check of 4 public pages on example.org and 6 linked PDFs · October 31, 2026</p>
+
+  <section class="callout">
+    <p><strong>Why this matters now.</strong> HHS's 2024 Section 504 rule requires organizations that receive HHS funding to make their websites, online forms and mobile apps conform to WCAG 2.1 Level AA. After the May 2026 interim final rule, the deadline is <strong>May 11, 2027</strong> for organizations with 15 or more employees (May 10, 2028 for smaller ones).</p>
+  </section>
+
+  <div class="tiles">
+    <div class="tile"><b>7</b>WCAG rules failed by automated testing</div>
+    <div class="tile"><b>68</b>page elements affected</div>
+    <div class="tile"><b>4 of 6</b>checked PDFs have no accessibility tags</div>
+    <div class="tile"><b>Yes</b>overlay widget detected</div>
+  </div>
+  
+    <section class="callout">
+      <h2>Accessibility widget detected: UserWay</h2>
+      <p>Overlay widgets do not make a website conform to WCAG. In 2025 the FTC finalized an order requiring one overlay vendor (accessiBe) to pay $1 million and stop claiming its tool makes sites compliant. The issues listed below were found <em>with the widget active</em>.</p>
+    </section>
+
+  <h2>What patients using assistive technology run into</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Issues found"><table>
+    <thead><tr><th>Issue</th><th class="num">Elements</th><th>Severity</th><th>Pages</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Images have no text alternative, so screen-reader users get nothing (or a file name).</strong><div class="muted">axe rule <code>image-alt</code> · wcag2a, wcag111</div></td>
+        <td class="num">4</td>
+        <td><span class="impact critical">critical</span></td>
+        <td class="muted small">/</td>
+      </tr>
+      <tr>
+        <td><strong>Form fields have no label, so screen-reader users do not know what to type.</strong><div class="muted">axe rule <code>label</code> · wcag2a, wcag412</div></td>
+        <td class="num">3</td>
+        <td><span class="impact critical">critical</span></td>
+        <td class="muted small">/new-patients/</td>
+      </tr>
+      <tr>
+        <td><strong>Zooming is disabled on mobile, which blocks patients who need to enlarge text.</strong><div class="muted">axe rule <code>meta-viewport</code> · wcag2aa, wcag144</div></td>
+        <td class="num">1</td>
+        <td><span class="impact critical">critical</span></td>
+        <td class="muted small">/locations/</td>
+      </tr>
+      <tr>
+        <td><strong>Text is too light against its background, so patients with low vision cannot read it.</strong><div class="muted">axe rule <code>color-contrast</code> · wcag2aa, wcag143</div></td>
+        <td class="num">40</td>
+        <td><span class="impact serious">serious</span></td>
+        <td class="muted small">/<br>/new-patients/</td>
+      </tr>
+      <tr>
+        <td><strong>Links have no readable name; a screen reader just says &quot;link&quot; with no destination.</strong><div class="muted">axe rule <code>link-name</code> · wcag2a, wcag244, wcag412</div></td>
+        <td class="num">12</td>
+        <td><span class="impact serious">serious</span></td>
+        <td class="muted small">/</td>
+      </tr>
+      <tr>
+        <td><strong>Links inside text are only distinguishable by color.</strong><div class="muted">axe rule <code>link-in-text-block</code> · wcag2a, wcag141</div></td>
+        <td class="num">6</td>
+        <td><span class="impact serious">serious</span></td>
+        <td class="muted small">/billing/sliding-fee/</td>
+      </tr>
+      <tr>
+        <td><strong>Embedded frames (maps, videos, booking widgets) have no title.</strong><div class="muted">axe rule <code>frame-title</code> · wcag2a, wcag412</div></td>
+        <td class="num">2</td>
+        <td><span class="impact serious">serious</span></td>
+        <td class="muted small">/locations/</td>
+      </tr></tbody></table></div>
+
+  <h2>Linked PDFs (patient forms, policies, notices)</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="PDF results"><table>
+    <thead><tr><th>File</th><th class="num">Pages</th><th>Tagged</th><th>Language set</th><th>Title shown</th><th>Text layer</th><th class="num">Unlabeled form fields</th></tr></thead>
+    <tbody><tr>
+        <td>New-Patient-Registration.pdf</td>
+        <td class="num">3</td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td>Has text</td>
+        <td class="num">46 of 46</td>
+      </tr><tr>
+        <td>Sliding-Fee-Application-2026.pdf</td>
+        <td class="num">2</td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td>Has text</td>
+        <td class="num">17 of 22</td>
+      </tr><tr>
+        <td>Consent-to-Treat.pdf</td>
+        <td class="num">1</td>
+        <td><span class="ok">Yes</span></td>
+        <td><span class="ok">Yes</span></td>
+        <td><span class="ok">Yes</span></td>
+        <td>Has text</td>
+        <td class="num">—</td>
+      </tr><tr>
+        <td>Notice-of-Privacy-Practices.pdf</td>
+        <td class="num">6</td>
+        <td><span class="ok">Yes</span></td>
+        <td><span class="ok">Yes</span></td>
+        <td><span class="ok">Yes</span></td>
+        <td>Has text</td>
+        <td class="num">—</td>
+      </tr><tr>
+        <td>Release-of-Information.pdf</td>
+        <td class="num">1</td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">Likely image-only</span></td>
+        <td class="num">—</td>
+      </tr><tr>
+        <td>Dental-History-Form.pdf</td>
+        <td class="num">2</td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td><span class="bad">No</span></td>
+        <td>Has text</td>
+        <td class="num">30 of 30</td>
+      </tr></tbody></table></div>
+    <p class="muted small">An untagged PDF has no structure for a screen reader (no headings, reading order or table structure). Image-only PDFs cannot be read at all without OCR.</p>
+
+  <h2>What this snapshot does not cover</h2>
+  <p>Automated tools find only part of WCAG failures. Keyboard-only navigation, screen-reader testing (NVDA/VoiceOver), patient portals and scheduling tools from vendors, videos and mobile apps all need manual review, plus documentation of results and remediation dates — which is what the HHS guidance and health center associations recommend keeping on file.</p>
+
+  <h2>Suggested next step</h2>
+  <p>A fixed-price readiness package: inventory of every patient-facing digital tool, manual WCAG 2.1 AA testing, a prioritized remediation plan your web vendor can execute, remediation of your patient-facing PDF forms, vendor ACR/VPAT requests, and an evidence file with retest dates. Reply to the email this came with, or write to ahmed@accessready.health.</p>
+
+  <footer>
+    Generated by automated testing (axe-core 4.10, WCAG 2.0/2.1 A and AA rules) on public pages only. This is not legal advice and not a certification of conformance or non-conformance.
+  </footer>
+</main>
+</body>
+</html>
